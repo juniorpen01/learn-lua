@@ -147,3 +147,43 @@ do -- tables
 		print(quux[i])
 	end
 end
+
+do -- metatables
+	local v1 = { x = 1, y = 2 }
+	local v2 = { x = 4, y = 3 }
+
+	-- idk how type annotations work
+	---@class Vec2
+	---@field x number
+	---@field y number
+	Vec2 = {
+		---@return Vec2
+		---@param x number
+		---@param y number
+		new = function(x, y)
+			return setmetatable({ x = x, y = y }, Vec2)
+		end,
+		__add = function(self, other)
+			return setmetatable({ x = self.x + other.x, y = self.y + other.y }, Vec2)
+		end,
+		__tostring = function(self)
+			return string.format("%d, %d", self.x, self.y)
+		end,
+	}
+
+	setmetatable(v1, Vec2)
+	setmetatable(v2, Vec2)
+
+	local v3 = v1 + v2
+	print(v3)
+
+	local raw_addr = getmetatable(v3).__tostring
+	local mt = getmetatable(v3)
+	mt.__tostring = nil
+	print(v3)
+	mt.__tostring = raw_addr
+
+	local v4 = Vec2.new(1, 1)
+	local v5 = Vec2.new(2, 2)
+	print(v4 + v5)
+end
