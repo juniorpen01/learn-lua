@@ -98,3 +98,52 @@ do -- funcs
 
 	print("hello")
 end
+
+do -- tables
+	local foo = {
+		key1 = 1,
+		["@"] = 2,
+		foo = function()
+			print("hello")
+		end,
+		bar = function(self)
+			print(self)
+		end,
+		[1] = 3,
+		["1foo"] = 4,
+		foo1 = 5,
+	}
+
+	for k, v in pairs(foo) do
+		print(k, v)
+	end
+
+	foo:foo()
+	foo:bar()
+
+	local function baz(qux)
+		print(qux.key1)
+	end
+
+	baz(foo)
+	baz({
+		key1 = 2,
+		key2 = 3,
+		key3 = 4,
+		key4 = 5,
+		key5 = 6,
+		key6 = 7,
+	})
+
+	for k, v in pairs(_G._G._G._G) do -- why can i do this? idk
+		print(k, v)
+	end
+
+	local quux = { 2, 3, 4, 5, 6, 7, 8 }
+	for i = 1, #quux, 2 do
+		print(quux[i])
+	end
+	for i = #quux, 1, -1 do
+		print(quux[i])
+	end
+end
