@@ -187,3 +187,12 @@ do -- metatables
 	local v5 = Vec2.new(2, 2)
 	print(v4 + v5)
 end
+
+do -- modules
+	-- print(package.path)
+
+	-- local lib = dofile("src/lib.lua")
+	local lib = require("src.lib")
+
+	lib.sayHello()
+end
